@@ -10,13 +10,13 @@ def listar_livros(request):
     livros = Livro.objects.all()
     return render(request, 'livros.html', {'livros': livros})
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def listar(request):
     if request.method == 'GET':
         livros = Livro.objects.all()
         serializer = LivroSerializer(livros, many = True)
         return Response(serializer.data)
-    if request.method == 'POST':
+    elif request.method == 'POST':
         serializer = LivroSerializer(data=request.data, many=isinstance(request.data, list))
         if serializer.is_valid():
             serializer.save()
